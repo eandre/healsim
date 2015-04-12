@@ -1,23 +1,24 @@
+#![feature(collections)]
+#![feature(convert)]
+pub mod event;
+pub mod importer;
+
 use std::iter::Iterator;
 
-pub struct Event<'a> {
-	pub name: &'a str
+pub struct SimStream<'s> {
+	source: &'s mut Iterator<Item=event::Event>
 }
 
-pub struct SimStream<'a> {
-	source: &'a mut Iterator<Item=&'a Event<'a>>
-}
+impl<'s> Iterator for SimStream<'s> {
+	type Item = event::Event;
 
-impl<'a> Iterator for SimStream<'a> {
-	type Item = &'a Event<'a>;
-
-	fn next(&mut self) -> Option<&'a Event<'a>> {
+	fn next(&mut self) -> Option<event::Event> {
 		self.source.next()
 	}
 }
 
-pub fn sim<'a, I>(events: &'a mut I) -> SimStream<'a>
-	where I: Iterator<Item=&'a Event<'a>>
+pub fn sim<'s, I>(events: &'s mut I) -> SimStream<'s>
+	where I: Iterator<Item=event::Event>
 {
 	SimStream{source: events}
 }

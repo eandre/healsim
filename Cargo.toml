@@ -11,3 +11,6 @@ path = "src/simlib/lib.rs"
 [[bin]]
 name = "healsim"
 path = "src/healsim/main.rs"
+
+[dependencies.hyper]
+git = "https://github.com/hyperium/hyper.git"
